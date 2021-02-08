@@ -1,11 +1,11 @@
-
 # Create your models here.
 
 from django.db import models
-from django.urls import reverse # Used to generate URLs by reversing the URL patterns
-import uuid # Required for unique book instances
+from django.urls import reverse  # Used to generate URLs by reversing the URL patterns
+import uuid  # Required for unique book instances
 from django.contrib.auth.models import User
 from datetime import date
+
 
 class Genre(models.Model):
     """Model representing a book genre."""
@@ -45,9 +45,12 @@ class Book(models.Model):
         return ', '.join(genre.name for genre in self.genre.all()[:3])
 
     display_genre.short_description = 'Genre'
+
+
 class BookInstance(models.Model):
     """Model representing a specific copy of a book (i.e. that can be borrowed from the library)."""
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text='Unique ID for this particular book across whole library')
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4,
+                          help_text='Unique ID for this particular book across whole library')
     book = models.ForeignKey('Book', on_delete=models.RESTRICT)
     imprint = models.CharField(max_length=200)
     due_back = models.DateField(null=True, blank=True)
@@ -83,6 +86,7 @@ class BookInstance(models.Model):
             return True
         return False
 
+
 class Author(models.Model):
     """Model representing an author."""
     first_name = models.CharField(max_length=100)
@@ -100,4 +104,3 @@ class Author(models.Model):
     def __str__(self):
         """String for representing the Model object."""
         return f'{self.last_name}, {self.first_name}'
-
